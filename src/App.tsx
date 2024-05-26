@@ -1,25 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect } from 'react';
 import './App.css';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { getInfo } from './api';
+import { setAllData } from './store/dataSlice';
+import Card from './components/Cards';
 
 function App() {
+  const data = useSelector((state: any) => state.data.all)
+  const dispatch = useDispatch();
+
+  /*useEffect(() => {
+    getInfo().then((data) => dispatch(setAllData(data)));
+    // eslint-disable-next-line
+  }, [])*/
+  getInfo().then((response) => dispatch(setAllData(response)));
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Card title={data[0].title} description={data[0].description} imageUrl={data[0].images[0]}/>
   );
 }
 
