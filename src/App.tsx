@@ -10,14 +10,13 @@ function App() {
   const data = useSelector((state: any) => state.data.all)
   const dispatch = useDispatch();
 
-  /*useEffect(() => {
+  useEffect(() => {
     getInfo().then((data) => dispatch(setAllData(data)));
     // eslint-disable-next-line
-  }, [])*/
-  getInfo().then((response) => dispatch(setAllData(response)));
+  }, [])
 
   return (
-    <Card title={data[0].title} description={data[0].description} imageUrl={data[0].images[0]}/>
+    <Card title={data[0]?.title} description={data[0]?.description} imageUrl={data[0]?.images[0]}/>
   );
 }
 
