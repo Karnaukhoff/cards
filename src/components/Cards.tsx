@@ -1,15 +1,16 @@
 import React from 'react';
+import { useNavigate } from "react-router-dom";
 import styled from 'styled-components';
 
 interface CardProps {
     title: string;
     description: string;
     imageUrl: string;
+    id: number;
   }
 
-
 const Image = styled.img`
-  width: 270px;
+  width: 268px;
   height: 250px;
   border: 1px solid #000000;
 `;
@@ -30,9 +31,11 @@ const Block = styled.div`
   }
 `
   
-  const Card: React.FC<CardProps> = ({ title, description, imageUrl }) => {
+  const Card: React.FC<CardProps> = ({ title, description, imageUrl, id }) => {
+    const navigate = useNavigate();
+    
     return (
-      <Block>
+      <Block onClick={() => navigate(`/card/${id}`)}>
         <Image src={imageUrl} alt={title} className="card-image" />
         <div className="card-content">
           <h2 className="card-title">{title?.substring(0, 20)}{title.length >= 20 ? "..." : ""}</h2>

@@ -90,7 +90,7 @@ const Main: React.FC = () => {
           show.map((item: any) => {
             return (
               <li key={item.id}>
-                <Card title={item?.title} description={item?.description} imageUrl={item?.images[0]} key={item.id}/>
+                <Card title={item?.title} description={item?.description} imageUrl={item?.images[0]} key={item.id} id={item.id}/>
               </li>
             );
           })
