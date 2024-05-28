@@ -3,13 +3,15 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 interface DataState {
   all: any[];
   filtered: any[];
-  filter:  string
+  filter:  string;
+  deleted: string;
 }
 
 const initialState: DataState = {
   all: [],
   filtered: [],
   filter: 'all',
+  deleted: ''
 };
 
 const dataSlice = createSlice({
@@ -24,10 +26,12 @@ const dataSlice = createSlice({
     },
     setFilter(state, action: PayloadAction<'all' | 'liked'>) {
         state.filter = action.payload;
-        //state.filtered = action.payload === 'liked' ? state.all.filter(card => card.liked) : state.all;
       },
+    setDeletedMode(state, action: PayloadAction<'' | 'active'>) {
+        state.deleted = action.payload;
+    },
   },
 });
 
-export const { setAllData, setFilteredData, setFilter } = dataSlice.actions;
+export const { setAllData, setFilteredData, setFilter, setDeletedMode } = dataSlice.actions;
 export default dataSlice.reducer;

@@ -10,6 +10,7 @@ const Main: React.FC = () => {
     const filter = useSelector((state: any) => state.data.filter)
     const data = useSelector((state: any) => state.data.all)
     const filtered = useSelector((state: any) => state.data.filtered)
+    const deletedMode = useSelector((state: any) => state.data.deleted)
     const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       dispatch(setFilter(event.target.value as 'all' | 'liked'));
     };
@@ -57,6 +58,9 @@ const Main: React.FC = () => {
     );
       // eslint-disable-next-line
     }, [])
+    useEffect(() =>  {
+      setShow(data)
+    }, [data])
     useEffect(() => {
       if (filter === "all") setShow(data)
         else setShow(filtered)
@@ -94,6 +98,12 @@ const Main: React.FC = () => {
               </li>
             );
           })
+        }
+        {
+          show.length === 0 && deletedMode === 'active' ? <p>Все карточки удалены</p> : ""
+        }
+        {
+          show.length === 0 && deletedMode === '' ? <p>Загрузка...</p> : ""
         }
         {
           (filtered.length === 0 && filter === "liked") ? <p>Ничего не найдено...</p> : null
