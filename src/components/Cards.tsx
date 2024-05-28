@@ -32,7 +32,7 @@ const Block = styled.div`
   
   const Card: React.FC<CardProps> = ({ title, description, imageUrl }) => {
     return (
-      <Block className="card">
+      <Block>
         <Image src={imageUrl} alt={title} className="card-image" />
         <div className="card-content">
           <h2 className="card-title">{title?.substring(0, 20)}{title.length >= 20 ? "..." : ""}</h2>
