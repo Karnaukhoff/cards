@@ -10,6 +10,8 @@ interface CardProps {
     description: string;
     imageUrl: string;
     id: number;
+    onAddCard: (newCard: any) => void;
+    item: any
   }
 
 const Image = styled.img`
@@ -34,14 +36,19 @@ const Block = styled.div`
   }
 `
   
-  const Card: React.FC<CardProps> = ({ title, description, imageUrl, id }) => {
+  const Card: React.FC<CardProps> = ({ title, description, imageUrl, id, onAddCard, item }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const data = useSelector((state: any) => state.data.all)
     const [liked, setLiked] = useState(false);
 
+    //Определить состояние liked по наличию в filtered(redux)
+    //useEffect, следящий за состоянием filtered и вновь определить состояние liked
     const handleClick = () => {
       setLiked(!liked);
+      //Добавить элемент в filtered
+      if (!liked) onAddCard(item)
+      //Удалить элемент из filtered  
     };
     
     return (
@@ -65,7 +72,7 @@ const Block = styled.div`
           cursor: 'pointer',
           fontSize: '24px',
           outline: 'none',
-          marginTop: '5px', // Добавляем отступ сверху
+          marginTop: '5px', 
         }}
         onClick={() => {
           let newData = data.filter((item: any) => item.id !== id);

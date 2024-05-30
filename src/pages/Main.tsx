@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { getInfo } from '../api';
-import { setAllData, setFilter } from '../store/dataSlice';
+import { setAllData, setFilter, setFilteredData } from '../store/dataSlice';
 import Card from '../components/Cards';
 
 const Main: React.FC = () => {
@@ -17,7 +17,16 @@ const Main: React.FC = () => {
   
     const dispatch = useDispatch();
     const [show, setShow] = useState<any>(data);
+    const [favourite, setFavourite] = useState<any>([]);
+
+    const addCard = (newCard: any) => {
+      setFavourite((prevArray: any) => [...prevArray, newCard]);
+    };
     
+    useEffect(() => {
+      dispatch(setFilteredData(favourite))
+        // eslint-disable-next-line
+    }, [favourite])
     const FilterContainer = styled.div`
     margin-bottom: 20px;
     display: flex;
@@ -94,7 +103,7 @@ const Main: React.FC = () => {
           show.map((item: any) => {
             return (
               <li key={item.id}>
-                <Card title={item?.title} description={item?.description} imageUrl={item?.images[0]} key={item.id} id={item.id}/>
+                <Card title={item?.title} description={item?.description} imageUrl={item?.images[0]} key={item.id} id={item.id} onAddCard={addCard} item={item}/>
               </li>
             );
           })
@@ -106,7 +115,7 @@ const Main: React.FC = () => {
           show.length === 0 && deletedMode === '' ? <p>Загрузка...</p> : ""
         }
         {
-          (filtered.length === 0 && filter === "liked") ? <p>Ничего не найдено...</p> : null
+          filtered.length === 0 && filter === "liked" ? <p>Ничего не найдено...</p> : null
         }
         
       </List>
