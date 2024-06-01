@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
@@ -11,7 +11,9 @@ interface CardProps {
     imageUrl: string;
     id: number;
     onAddCard: (newCard: any) => void;
-    item: any
+    item: any;
+    removeCard: (newCard: any) => void;
+    favourite: any
   }
 
 const Image = styled.img`
@@ -36,7 +38,7 @@ const Block = styled.div`
   }
 `
   
-  const Card: React.FC<CardProps> = ({ title, description, imageUrl, id, onAddCard, item }) => {
+  const Card: React.FC<CardProps> = ({ title, description, imageUrl, id, onAddCard, item, removeCard, favourite }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const data = useSelector((state: any) => state.data.all)
@@ -47,9 +49,23 @@ const Block = styled.div`
     const handleClick = () => {
       setLiked(!liked);
       //Добавить элемент в filtered
-      if (!liked) onAddCard(item)
-      //Удалить элемент из filtered  
+      if (favourite.includes(item)){
+         removeCard(item)
+        }
+      else {
+        onAddCard(item)
+      }  
     };
+
+    useEffect(() => {
+      if (favourite.includes(item)){
+        setLiked(true)
+       }
+     else {
+      setLiked(false)
+     } 
+ // eslint-disable-next-line
+    }, [favourite])
     
     return (
       <>

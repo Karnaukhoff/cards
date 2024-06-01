@@ -22,6 +22,11 @@ const Main: React.FC = () => {
     const addCard = (newCard: any) => {
       setFavourite((prevArray: any) => [...prevArray, newCard]);
     };
+    const removeCard = (deleteCard: any) => {
+      const newData = favourite.filter((item: any) => item.id !== deleteCard.id);
+
+      setFavourite(newData)
+    }
     
     useEffect(() => {
       dispatch(setFilteredData(favourite))
@@ -103,7 +108,7 @@ const Main: React.FC = () => {
           show.map((item: any) => {
             return (
               <li key={item.id}>
-                <Card title={item?.title} description={item?.description} imageUrl={item?.images[0]} key={item.id} id={item.id} onAddCard={addCard} item={item}/>
+                <Card title={item?.title} description={item?.description} imageUrl={item?.images[0]} key={item.id} id={item.id} onAddCard={addCard} item={item} removeCard={removeCard} favourite={favourite}/>
               </li>
             );
           })
