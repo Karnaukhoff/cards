@@ -88,7 +88,7 @@ const Main: React.FC = () => {
       if (filter === "all") setShow(data)
         else setShow(filtered)
       // eslint-disable-next-line
-    }, [filter])
+    }, [filter, filtered])
   
     return (
       <>
