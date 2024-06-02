@@ -17,25 +17,34 @@ const Main: React.FC = () => {
   
     const dispatch = useDispatch();
     const [show, setShow] = useState<any>(data);
-    const [favourite, setFavourite] = useState<any>([]);
+    const [favourite, setFavourite] = useState<any>(() => {
+      const savedFavourites = localStorage.getItem('favourite');
+      return savedFavourites ? JSON.parse(savedFavourites) : [];
+    });
 
     const addCard = (newCard: any) => {
-      setFavourite((prevArray: any) => [...prevArray, newCard]);
+      setFavourite((prevArray: any) => {
+        const updatedFavourites = [...prevArray, newCard];
+        localStorage.setItem('favourite', JSON.stringify(updatedFavourites));
+        return updatedFavourites;
+      });
     };
     const removeCard = (deleteCard: any) => {
-      const newData = favourite.filter((item: any) => item.id !== deleteCard.id);
-
-      setFavourite(newData)
-    }
+      setFavourite((prevArray: any) => {
+        const updatedFavourites = prevArray.filter((item: any) => item.id !== deleteCard.id);
+        localStorage.setItem('favourite', JSON.stringify(updatedFavourites));
+        return updatedFavourites;
+      });
+    };
     
     useEffect(() => {
-      dispatch(setFilteredData(favourite))
-        // eslint-disable-next-line
-    }, [favourite])
+      dispatch(setFilteredData(favourite));
+    }, [favourite, dispatch]);
+
     const FilterContainer = styled.div`
-    margin-bottom: 20px;
-    display: flex;
-    gap: 10px;
+      margin-bottom: 20px;
+      display: flex;
+      gap: 10px;
   `;
     const List = styled.div`
       max-width: 1175px;
@@ -62,7 +71,7 @@ const Main: React.FC = () => {
           border-radius: 3px;
       }
       list-style: none;
-    `
+    `;
   
     useEffect(() => {
       getInfo().then((data) => {

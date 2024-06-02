@@ -44,11 +44,9 @@ const Block = styled.div`
     const data = useSelector((state: any) => state.data.all)
     const [liked, setLiked] = useState(false);
 
-    //Определить состояние liked по наличию в filtered(redux)
-    //useEffect, следящий за состоянием filtered и вновь определить состояние liked
     const handleClick = () => {
       setLiked(!liked);
-      //Добавить элемент в filtered
+
       if (favourite.includes(item)){
          removeCard(item)
         }
@@ -58,14 +56,13 @@ const Block = styled.div`
     };
 
     useEffect(() => {
-      if (favourite.includes(item)){
-        setLiked(true)
-       }
-     else {
-      setLiked(false)
-     } 
- // eslint-disable-next-line
-    }, [favourite])
+      if (favourite.some((favItem: any) => favItem.id === item.id)) {
+        setLiked(true);
+      } else {
+        setLiked(false);
+      }
+      // eslint-disable-next-line
+    }, [favourite, item]);
     
     return (
       <>
