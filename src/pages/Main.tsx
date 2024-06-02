@@ -117,16 +117,16 @@ const Main: React.FC = () => {
           show.map((item: any) => {
             return (
               <li key={item.id}>
-                <Card title={item?.title} description={item?.description} imageUrl={item?.images[0]} key={item.id} id={item.id} onAddCard={addCard} item={item} removeCard={removeCard} favourite={favourite}/>
+                <Card title={item?.title} description={item?.description} imageUrl={item?.images[0]} key={item.id} id={item.id} onAddCard={addCard} item={item} removeCard={removeCard} favourite={favourite} filter={filter}/>
               </li>
             );
           })
         }
         {
-          show.length === 0 && deletedMode === 'active' ? <p>Все карточки удалены</p> : ""
+          show.length === 0 && deletedMode === 'active' && filter === "all" ? <p>Все карточки удалены</p> : ""
         }
         {
-          show.length === 0 && deletedMode === '' ? <p>Загрузка...</p> : ""
+          show.length === 0 && deletedMode === '' && filter === "all" ? <p>Загрузка...</p> : ""
         }
         {
           filtered.length === 0 && filter === "liked" ? <p>Ничего не найдено...</p> : null

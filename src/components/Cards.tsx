@@ -13,7 +13,8 @@ interface CardProps {
     onAddCard: (newCard: any) => void;
     item: any;
     removeCard: (newCard: any) => void;
-    favourite: any
+    favourite: any;
+    filter: string;
   }
 
 const Image = styled.img`
@@ -36,9 +37,29 @@ const Block = styled.div`
   &:hover{
       transform: scale(1.01);
   }
-`
+`;
+const DeleteButton = styled.button<{ isVisible: boolean }>`
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  outline: none;
+  margin-top: 5px;
+  color: black;
+
+  img {
+    height: 30px;
+    width: 30px;
+  }
+
+  display: ${({ isVisible }) => (isVisible ? 'block' : 'none')};
+
+  &:hover {
+    color: gray;
+  }
+`;
   
-  const Card: React.FC<CardProps> = ({ title, description, imageUrl, id, onAddCard, item, removeCard, favourite }) => {
+  const Card: React.FC<CardProps> = ({ title, description, imageUrl, id, onAddCard, item, removeCard, favourite, filter }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const data = useSelector((state: any) => state.data.all)
@@ -78,26 +99,17 @@ const Block = styled.div`
         display: 'flex',
         justifyContent: 'flex-end',
       }}>
-        <button
-        style={{
-          backgroundColor: 'transparent',
-          border: 'none',
-          cursor: 'pointer',
-          fontSize: '24px',
-          outline: 'none',
-          marginTop: '5px', 
-        }}
-        onClick={() => {
-          let newData = data.filter((item: any) => item.id !== id);
-          dispatch(setAllData(newData))
-          dispatch(setDeletedMode('active'))
+        <DeleteButton
+          isVisible={filter !== 'liked'}
+          onClick={() => {
+            removeCard(item)
+            let newData = data.filter((item: any) => item.id !== id);
+            dispatch(setAllData(newData));
+            dispatch(setDeletedMode('active'));
           }}
-      >
-        <img src="trash.png" alt="" style={{
-          height: '30px',
-          width: '30px'
-        }}/>
-      </button>
+        >
+          <img src="trash.png" alt="" />
+        </DeleteButton>
         <button style={{
           backgroundColor: 'transparent',
           color: liked ? 'red' : 'black',
