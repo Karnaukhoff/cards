@@ -66,9 +66,7 @@ const DeleteButton = styled.button<{ isVisible: boolean }>`
     const [liked, setLiked] = useState(false);
 
     const handleClick = () => {
-      setLiked(!liked);
-
-      if (favourite.includes(item)){
+      if (favourite.some((favItem: any) => favItem.id === item.id)){
          removeCard(item)
         }
       else {
