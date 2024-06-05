@@ -40,25 +40,19 @@ const Main: React.FC = () => {
     useEffect(() => {
       dispatch(setFilteredData(favourite));
     }, [favourite, dispatch]);
-
-    
   
     useEffect(() => {
       getInfo().then((data) => {
         dispatch(setAllData(data))
-        setShow(data)
-    }
-    );
+    });
       // eslint-disable-next-line
     }, [])
-    useEffect(() =>  {
-      setShow(data)
-    }, [data])
+
     useEffect(() => {
       if (filter === "all") setShow(data)
-        else setShow(filtered)
+      else setShow(filtered)
       // eslint-disable-next-line
-    }, [filter, filtered])
+    }, [filter, filtered, data])
   
     return (
       <>
