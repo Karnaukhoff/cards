@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
-import styled from 'styled-components';
 import { setAllData, setDeletedMode } from '../store/dataSlice';
+import * as S from "./styles/CardsStyles";
 
 interface CardProps {
     title: string;
@@ -16,48 +16,6 @@ interface CardProps {
     favourite: any;
     filter: string;
   }
-
-const Image = styled.img`
-  width: 268px;
-  height: 250px;
-  border: 1px solid #000000;
-`;
-const Block = styled.div`
-  width: 270px;
-  height: 430px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.25);
-  transition: 0.4s;
-  &:hover{
-      transform: scale(1.01);
-  }
-`;
-const DeleteButton = styled.button<{ isVisible: boolean }>`
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 24px;
-  outline: none;
-  margin-top: 5px;
-  color: black;
-
-  img {
-    height: 30px;
-    width: 30px;
-  }
-
-  display: ${({ isVisible }) => (isVisible ? 'block' : 'none')};
-
-  &:hover {
-    color: gray;
-  }
-`;
   
   const Card: React.FC<CardProps> = ({ title, description, imageUrl, id, onAddCard, item, removeCard, favourite, filter }) => {
     const navigate = useNavigate();
@@ -85,19 +43,19 @@ const DeleteButton = styled.button<{ isVisible: boolean }>`
     
     return (
       <>
-      <Block onClick={() => navigate(`/card/${id}`)}>
-        <Image src={imageUrl} alt={title} className="card-image" />
+      <S.Block onClick={() => navigate(`/card/${id}`)}>
+        <S.Image src={imageUrl} alt={title} className="card-image" />
         <div className="card-content">
           <h2 className="card-title">{title?.substring(0, 20)}{title.length >= 20 ? "..." : ""}</h2>
           <p className="card-description">{description?.substring(0, 100)}{description.length >= 100 ? "..." : ""}</p>
         </div>
 
-      </Block>
+      </S.Block>
       <div style={{
         display: 'flex',
         justifyContent: 'flex-end',
       }}>
-        <DeleteButton
+        <S.DeleteButton
           isVisible={filter !== 'liked'}
           onClick={() => {
             removeCard(item)
@@ -107,7 +65,7 @@ const DeleteButton = styled.button<{ isVisible: boolean }>`
           }}
         >
           <img src="trash.png" alt="" />
-        </DeleteButton>
+        </S.DeleteButton>
         <button style={{
           backgroundColor: 'transparent',
           color: liked ? 'red' : 'black',

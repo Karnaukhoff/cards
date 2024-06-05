@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import styled from 'styled-components';
 import { getInfo } from '../api';
 import { setAllData, setFilter, setFilteredData } from '../store/dataSlice';
 import Card from '../components/Cards';
+import * as S from "./styles/MainStyles";
 
 const Main: React.FC = () => {
     const filter = useSelector((state: any) => state.data.filter)
@@ -41,37 +41,7 @@ const Main: React.FC = () => {
       dispatch(setFilteredData(favourite));
     }, [favourite, dispatch]);
 
-    const FilterContainer = styled.div`
-      margin-bottom: 20px;
-      display: flex;
-      gap: 10px;
-  `;
-    const List = styled.div`
-      max-width: 1175px;
-      width: 100%;
-      display: -ms-grid;
-      display: grid;
-      -ms-grid-columns: (270px);
-          grid-template-columns: repeat(4, 270px);
-      grid-auto-rows: 441px;
-      grid-gap: 80px 26px;
-      -webkit-box-pack: center;
-          -ms-flex-pack: center;
-              justify-content: center;
-      scrollbar-color: #FFFFFF #2E2E2E;
-      scrollbar-width: thin;
-      scrollbar-width: 0px;
-      height: 922px;
-      &::-webkit-scrollbar {
-          width: 0px;
-          background-color: #009EE4;
-      }
-      &::-webkit-scrollbar-thumb {
-          background-color: #0080C1;
-          border-radius: 3px;
-      }
-      list-style: none;
-    `;
+    
   
     useEffect(() => {
       getInfo().then((data) => {
@@ -92,7 +62,7 @@ const Main: React.FC = () => {
   
     return (
       <>
-      <FilterContainer>
+      <S.FilterContainer>
           <label>
             <input
               type="radio"
@@ -111,8 +81,8 @@ const Main: React.FC = () => {
             />
             Show Liked
           </label>
-      </FilterContainer>
-      <List >
+      </S.FilterContainer>
+      <S.List >
         {
           show.map((item: any) => {
             return (
@@ -132,7 +102,7 @@ const Main: React.FC = () => {
           filtered.length === 0 && filter === "liked" ? <p>Ничего не найдено...</p> : null
         }
         
-      </List>
+      </S.List>
       </>
       
     );

@@ -1,30 +1,10 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 import { getInfo } from '../api';
 import { setAllData } from '../store/dataSlice';
 import { useDispatch } from 'react-redux';
-
-const Image = styled.img`
-  width: 600px;
-  height: 600px;
-  border: 1px solid #000000;
-`;
-const Block = styled.div`
-  width: 600px;
-  height: 800px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-`
-const BackToCardsButton = styled.button`
-    width: 100px;
-`;
+import * as S from "./styles/CardPageStyles";
 
 const CardPage: React.FC = () => {
     const data = useSelector((state: any) => state.data.all)
@@ -53,14 +33,14 @@ const CardPage: React.FC = () => {
 
     return(
         <>
-        <Block>
-            <BackToCardsButton onClick={() => navigate(`/`)}>back to cards</BackToCardsButton>
-            <Image src={card?.images[0]} alt="" />
+        <S.Block>
+            <S.BackToCardsButton onClick={() => navigate(`/`)}>back to cards</S.BackToCardsButton>
+            <S.Image src={card?.images[0]} alt="" />
             <div className="card-content">
                 <h2 className="card-title">{card?.title}</h2>
                 <p className="card-description">{card?.description}</p>
             </div>
-        </Block>
+        </S.Block>
         </>
     )
 }
