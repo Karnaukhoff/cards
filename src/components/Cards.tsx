@@ -1,81 +1,84 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { setAllData, setDeletedMode } from '../store/dataSlice';
 import * as S from "./styles/CardsStyles";
 
+interface Item {
+  id: number;
+  title: string;
+  description: string;
+  images: string[];
+}
+
 interface CardProps {
-    title: string;
-    description: string;
-    imageUrl: string;
-    id: number;
-    onAddCard: (newCard: any) => void;
-    item: any;
-    removeCard: (newCard: any) => void;
-    favourite: any;
-    filter: string;
-  }
+  title: string;
+  description: string;
+  imageUrl: string;
+  id: number;
+  onAddCard: (newCard: Item) => void;
+  item: Item;
+  removeCard: (newCard: Item) => void;
+  favourite: Item[];
+  filter: string;
+}
+
+const Card: React.FC<CardProps> = ({ title, description, imageUrl, id, onAddCard, item, removeCard, favourite, filter }) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const data = useSelector((state: { data: { all: Item[] } }) => state.data.all);
+  const [liked, setLiked] = useState<boolean>(false);
+
+  const handleClick = () => {
+    if (favourite.some((favItem) => favItem.id === item.id)){
+      removeCard(item);
+    } else {
+      onAddCard(item);
+    }  
+  };
+
+  useEffect(() => {
+    if (favourite.some((favItem) => favItem.id === item.id)) {
+      setLiked(true);
+    } else {
+      setLiked(false);
+    }
+    // eslint-disable-next-line
+  }, [favourite, item]);
   
-  const Card: React.FC<CardProps> = ({ title, description, imageUrl, id, onAddCard, item, removeCard, favourite, filter }) => {
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const data = useSelector((state: any) => state.data.all)
-    const [liked, setLiked] = useState(false);
-
-    const handleClick = () => {
-      if (favourite.some((favItem: any) => favItem.id === item.id)){
-         removeCard(item)
-        }
-      else {
-        onAddCard(item)
-      }  
-    };
-
-    useEffect(() => {
-      if (favourite.some((favItem: any) => favItem.id === item.id)) {
-        setLiked(true);
-      } else {
-        setLiked(false);
-      }
-      // eslint-disable-next-line
-    }, [favourite, item]);
-    
-    return (
-      <>
+  return (
+    <>
       <S.Block onClick={() => navigate(`/card/${id}`)}>
         <S.Image src={imageUrl} alt={title} className="card-image" />
         <div className="card-content">
-          <h2 className="card-title">{title?.substring(0, 20)}{title.length >= 20 ? "..." : ""}</h2>
-          <p className="card-description">{description?.substring(0, 100)}{description.length >= 100 ? "..." : ""}</p>
+          <h2 className="card-title">{title.substring(0, 20)}{title.length >= 20 ? "..." : ""}</h2>
+          <p className="card-description">{description.substring(0, 100)}{description.length >= 100 ? "..." : ""}</p>
         </div>
-
       </S.Block>
-      <div style={{
-        display: 'flex',
-        justifyContent: 'flex-end',
-      }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <S.DeleteButton
           isVisible={filter !== 'liked'}
           onClick={() => {
-            removeCard(item)
-            let newData = data.filter((item: any) => item.id !== id);
+            removeCard(item);
+            const newData = data.filter((dataItem) => dataItem.id !== id);
             dispatch(setAllData(newData));
             dispatch(setDeletedMode('active'));
           }}
         >
           <img src="trash.png" alt="" />
         </S.DeleteButton>
-        <button style={{
-          backgroundColor: 'transparent',
-          color: liked ? 'red' : 'black',
-          border: 'none',
-          cursor: 'pointer',
-          fontSize: '24px',
-          outline: 'none',
-          marginTop: '5px',
-        }}
-        onClick={handleClick}>
+        <button
+          style={{
+            backgroundColor: 'transparent',
+            color: liked ? 'red' : 'black',
+            border: 'none',
+            cursor: 'pointer',
+            fontSize: '24px',
+            outline: 'none',
+            marginTop: '5px',
+          }}
+          onClick={handleClick}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill={liked ? 'red' : 'none'}
@@ -92,9 +95,8 @@ interface CardProps {
           </svg>
         </button>
       </div>
-      </>
-      
-    );
-  };
-  
-  export default Card;
+    </>
+  );
+};
+
+export default Card;
